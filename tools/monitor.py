@@ -23,7 +23,7 @@ sys.path.insert(0, str(src_path))
 class TradingMonitor:
     """交易监控器"""
     
-    def __init__(self, config_path: str = '../config.yaml'):
+    def __init__(self, config_path: str = 'config.yaml'):
         self.config = self._load_config(config_path)
         self.db_path = Path('../data/trading_bot.db')
         

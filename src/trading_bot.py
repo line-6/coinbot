@@ -25,7 +25,7 @@ from data_manager import DataManager
 class TradingBot:
     """量化交易机器人主类"""
     
-    def __init__(self, config_path: str = '../config.yaml'):
+    def __init__(self, config_path: str = 'config.yaml'):
         # 加载配置
         self.config = self._load_config(config_path)
         
