@@ -30,7 +30,7 @@ sys.path.insert(0, str(src_path))
 class PerformanceAnalyzer:
     """性能分析器"""
     
-    def __init__(self, config_path: str = '/root/PROJECT/contractBot/config.yaml'):
+    def __init__(self, config_path: str = '../config.yaml'):
         self.config = self._load_config(config_path)
         self.db_path = Path('../data/trading_bot.db')
         self.output_dir = Path('../analysis')

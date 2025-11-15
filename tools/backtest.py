@@ -24,7 +24,7 @@ import ccxt
 class Backtester:
     """回测器"""
     
-    def __init__(self, config_path: str = 'config.yaml'):
+    def __init__(self, config_path: str = '../config.yaml'):
         self.config = self._load_config(config_path)
         self.strategy = TrendFollowingStrategy(self.config)
         
