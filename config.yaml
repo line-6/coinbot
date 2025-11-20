@@ -1,0 +1,83 @@
+# 量化交易机器人配置文件
+
+# 交易所配置
+exchange:
+  name: binance
+  apiKey: "YOUR-API-KEY"
+  secretKey: "YOUR-SECRET-KEY"
+  sandbox: true  # 是否使用测试环境
+  rateLimit: 1200
+  enableRateLimit: true
+
+# WebSocket配置
+websocket:
+  url: https://api.binance.com/api
+  topics:
+    - btcusdt@kline_1h
+    - btcusdt@ticker
+
+# 交易配置
+trading:
+  symbol: BNB/USDT
+  base_currency: EOS
+  quote_currency: USDT
+  trade_amount: 0.2  # 每笔交易数量(EOS)
+  timeframe: 5m     # K线周期 可选: 1m, 5m, 15m, 30m, 1h, 4h, 1d
+  trade_type: spot  # spot现货 / futures合约
+  
+# 策略参数
+strategy:
+  name: TrendFollowing
+  
+  # 趋势指标参数
+  indicators:
+    # EMA参数
+    ema_fast: 12      # 快速EMA周期
+    ema_slow: 26      # 慢速EMA周期
+    ema_signal: 9     # 信号线EMA周期
+    
+    # MACD参数
+    macd_fast: 12
+    macd_slow: 26
+    macd_signal: 9
+    
+    # ADX参数
+    adx_period: 14
+    adx_threshold: 25  # ADX趋势强度阈值
+    
+    # 布林带参数
+    bb_period: 20
+    bb_std: 2
+    
+    # RSI参数
+    rsi_period: 14
+    rsi_overbought: 70
+    rsi_oversold: 30
+  
+  # 信号参数
+  signals:
+    trend_confirmation_bars: 2  # 趋势确认K线数量
+    volume_threshold: 1.2       # 成交量倍数阈值
+    
+  # 风险管理
+  risk_management:
+    stop_loss_pct: 2.0      # 止损百分比
+    take_profit_pct: 4.0    # 止盈百分比
+    max_position_size: 100  # 最大持仓数量
+    max_daily_trades: 10    # 每日最大交易次数
+    
+# 日志配置
+logging:
+  level: INFO
+  file: logs/trading_bot.log
+  max_size: 10MB
+  backup_count: 5
+  
+# 数据存储
+data:
+  save_trades: true
+  trades_file: data/trades.csv
+  save_klines: true
+  klines_file: data/klines.csv
+  save_signals: true
+  signals_file: data/signals.csv
