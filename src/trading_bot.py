@@ -159,7 +159,7 @@ class TradingBot:
         except Exception as e:
             logger.error(f"设置定时任务失败: {e}")
     
-    def _main_loop(self):
+    def  _main_loop(self):
         """主循环"""
         try:
             while self.is_running:
@@ -275,6 +275,7 @@ class TradingBot:
             
             # 获取账户余额
             balance = self.exchange.get_balance()
+            logger.info(f"账户余额: {balance}")
             
             # 根据信号类型执行不同操作
             order = None
@@ -287,15 +288,16 @@ class TradingBot:
                     self.entry_price = current_price
                     self.strategy.update_position(signal, trade_amount, current_price)
             
-            elif signal == SignalType.SELL and self.current_position > 0:
-                # 现货卖出
-                sell_amount = min(trade_amount, self.current_position)
-                order = self.exchange.place_market_order('sell', sell_amount)
-                if order:
-                    self.current_position -= sell_amount
-                    if self.current_position <= 0:
-                        self.entry_price = 0
-                    self.strategy.update_position(signal, sell_amount, current_price)
+            # 卖出信号由风险控制触发
+            # elif signal == SignalType.SELL and self.current_position > 0:
+            #     # 现货卖出
+            #     sell_amount = min(trade_amount, self.current_position)
+            #     order = self.exchange.place_market_order('sell', sell_amount)
+            #     if order:
+            #         self.current_position -= sell_amount
+            #         if self.current_position <= 0:
+            #             self.entry_price = 0
+            #         self.strategy.update_position(signal, sell_amount, current_price)
             
             elif signal == SignalType.LONG and self.current_position <= 0:
                 # 合约做多

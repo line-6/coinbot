@@ -29,7 +29,7 @@ class Backtester:
         self.strategy = TrendFollowingStrategy(self.config)
         
         # 回测参数
-        self.initial_balance = 10000  # 初始资金
+        self.initial_balance = 1000000  # 初始资金
         self.current_balance = self.initial_balance
         self.position = 0
         self.entry_price = 0
@@ -55,10 +55,11 @@ class Backtester:
             exchange = ccxt.binance({
                 'apiKey': self.config['exchange']['apiKey'],
                 'secret': self.config['exchange']['secretKey'],
-                'sandbox': False,
                 'enableRateLimit': True
             })
-            
+            exchange.httpsProxy = "http://127.0.0.1:7890/"
+            # 测试连接
+            exchange.load_markets()
             # 转换时间格式
             start_timestamp = exchange.parse8601(start_date + 'T00:00:00Z')
             end_timestamp = exchange.parse8601(end_date + 'T23:59:59Z')
@@ -331,17 +332,17 @@ class Backtester:
     def save_results(self, performance: Dict, filename: str = None):
         """保存回测结果"""
         if filename is None:
-            filename = f"backtest_results_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
+            filename = f"backtest/backtest_results_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
         
         # 保存交易记录
         trades_df = pd.DataFrame(self.trades)
         base_filename = filename.replace('.csv', '') if filename and filename.endswith('.csv') else (filename if filename else 'backtest_results')
-        trades_df.to_csv(f"trades_{base_filename}.csv", index=False)
+        trades_df.to_csv(f"backtest/trades_{base_filename}.csv", index=False)
         
         # 保存余额历史
         balance_df = pd.DataFrame(self.balance_history)
         balance_filename = filename.replace('.csv', '') if filename and filename.endswith('.csv') else (filename if filename else 'backtest_results')
-        balance_df.to_csv(f"balance_{balance_filename}.csv", index=False)
+        balance_df.to_csv(f"backtest/balance_{balance_filename}.csv", index=False)
         
         # 保存性能指标
         performance_filename = filename.replace('.csv', '') if filename and filename.endswith('.csv') else (filename if filename else 'backtest_results')
@@ -358,9 +359,9 @@ def main():
     """主函数"""
     # 回测参数
     symbol = 'ETH/USDT'
-    timeframe = '15m'
-    start_date = '2025-06-29'
-    end_date = '2025-06-29'
+    timeframe = '1h'
+    start_date = '2025-01-01'
+    end_date = '2025-11-15'
     
     # 创建回测器
     backtester = Backtester()

@@ -185,23 +185,27 @@ class TrendFollowingStrategy:
             # 现货交易信号
             if self.config['trading']['trade_type'] == 'spot':
                 # 买入信号
+                # if (current_trend == TrendDirection.UP and 
+                #     latest['ema_fast'] > latest['ema_slow'] and
+                #     latest['macd'] > latest['macd_signal'] and
+                #     latest['macd_histogram'] > prev['macd_histogram'] and
+                #     latest['rsi'] < self.indicators_config['rsi_overbought'] and
+                #     volume_confirmed and
+                #     self.current_position <= 0):
                 if (current_trend == TrendDirection.UP and 
-                    latest['ema_fast'] > latest['ema_slow'] and
-                    latest['macd'] > latest['macd_signal'] and
-                    latest['macd_histogram'] > prev['macd_histogram'] and
-                    latest['rsi'] < self.indicators_config['rsi_overbought'] and
-                    volume_confirmed and
-                    self.current_position <= 0):
+                    latest['ema_fast'] > latest['ema_slow']):
                     signal = SignalType.BUY
                 
                 # 卖出信号
+                # elif (current_trend == TrendDirection.DOWN and
+                #       latest['ema_fast'] < latest['ema_slow'] and
+                #       latest['macd'] < latest['macd_signal'] and
+                #       latest['macd_histogram'] < prev['macd_histogram'] and
+                #       latest['rsi'] > self.indicators_config['rsi_oversold'] and
+                #       volume_confirmed and
+                #       self.current_position > 0):
                 elif (current_trend == TrendDirection.DOWN and
-                      latest['ema_fast'] < latest['ema_slow'] and
-                      latest['macd'] < latest['macd_signal'] and
-                      latest['macd_histogram'] < prev['macd_histogram'] and
-                      latest['rsi'] > self.indicators_config['rsi_oversold'] and
-                      volume_confirmed and
-                      self.current_position > 0):
+                    latest['ema_fast'] < latest['ema_slow']):
                     signal = SignalType.SELL
             
             # 合约交易信号
